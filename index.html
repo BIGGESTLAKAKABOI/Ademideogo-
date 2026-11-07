@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADEMIDE OGO - LAGOS LIFE STORE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#000;color:#fff}
+.top{border-bottom:1px solid #222;padding:14px 16px;display:flex;gap:10px;background:#000}
+.logo{width:36px;height:36px;border:1px solid #c9a86a;color:#c9a86a;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.hero{margin:16px;border:1px solid #333;border-radius:20px;padding:35px 20px;text-align:center}
+.hero small{color:#c9a86a;letter-spacing:3px}
+.circle{width:90px;height:90px;border:1px solid #c9a86a;border-radius:50%;margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:50px;color:#c9a86a}
+.hero h1 span{color:#c9a86a}
+.hero p{color:#aaa;font-size:14px}
+.btn-gold{background:linear-gradient(90deg,#e8c47a,#c9a86a);color:#000;padding:15px;border:none;border-radius:10px;font-weight:bold;width:90%;margin-top:20px}
+.btn-green{background:#1a7a4a;color:#fff;padding:15px;border:none;border-radius:10px;font-weight:bold;width:100%}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+.pkg{border:1px solid #2a2a2a;background:#111;padding:20px 16px;border-radius:12px;text-align:center}
+.pkg h3{color:#e8c47a;font-size:22px;margin:6px 0}.pkg small{color:#c9a86a}
+.payBox{margin:16px;border:1px solid #333;border-radius:20px;padding:22px;display:none}
+.bank{border:1px solid #8a6d2b;border-radius:12px;padding:16px;margin-top:15px}
+input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #333;background:#111;color:#fff}
+#adminPage{display:none;min-height:100vh;padding:20px}
+.adminBox{max-width:360px;margin:60px auto;background:#111;border:1px solid #333;border-radius:16px;padding:28px;text-align:center}
+.card{background:#111;border:1px solid #222;border-radius:12px;padding:16px;margin:12px 0;text-align:left;max-width:500px;margin:12px auto}
+</style>
+</head>
+<body>
+
+<div id="storePage">
+<div class="top"><div class="logo">AO</div><div><b>ADEMIDE OGO</b><br><span style="color:#c9a86a;font-size:12px">LAGOS LIFE STORE</span></div></div>
+<div class="hero"><small>UNOFFICIAL TOP-UP</small><div class="circle">₦</div><h1>Get <span>Game Naira</span><br>Fast</h1><p>Payment by bank transfer only - SMARTCASH 9077036454</p><button class="btn-gold" onclick="document.getElementById('grid').scrollIntoView()">View Packages</button></div>
+<div style="text-align:center;padding:10px"><h2>Choose a <span style="color:#c9a86a">Package</span></h2><p style="color:#999;font-size:13px">New Prices Updated</p></div>
+<div class="grid" id="grid"></div>
+<div class="payBox" id="payBox">
+<h2 id="selName" style="text-align:center">50 Billion</h2>
+<h2 id="selPrice" style="text-align:center;color:#e8c47a">₦200</h2>
+<div class="bank"><label>SMARTCASH</label><p style="margin-top:10px">Oyetunji Akinkunmi</p><h2>9077036454</h2></div>
+<input id="gameUser" placeholder="Enter Lagos Life Username">
+<button class="btn-green" onclick="goWhats()">CHAT & SEND RECEIPT</button>
+</div>
+<div style="text-align:center;padding:30px">
+<p style="color:#555;font-size:12px">ADEMIDE OGO STORE</p>
+<button onclick="showAdmin()" style="background:#111;color:#c9a86a;border:1px solid #c9a86a;padding:10px 25px;border-radius:20px;margin-top:15px">⚙️ ADMIN PANEL</button>
+</div>
+</div>
+
+<div id="adminPage">
+<div class="adminBox" id="loginBox">
+<h1 style="color:#c9a86a">Admin Login</h1>
+<input type="password" id="pass" placeholder="Password">
+<button onclick="doLogin()" style="width:100%;padding:12px;background:#c9a86a;border:none;border-radius:8px;font-weight:bold">Enter</button>
+<button onclick="showStore()" style="width:100%;padding:12px;background:#222;color:#fff;border:none;border-radius:8px;margin-top:10px">Back to Store</button>
+</div>
+<div id="dashBox" style="display:none">
+<h2 style="color:#c9a86a;text-align:center">ADEMIDE OGO — Admin</h2>
+<div class="card"><b style="color:#e8c47a">Bank:</b> SMARTCASH - 9077036454 - Oyetunji Akinkunmi<br><b style="color:#e8c47a">Orders:</b> <span id="totalOrders">0</span></div>
+<div class="card"><b style="color:#e8c47a">Recent Orders</b><div id="orderList"></div></div>
+<div style="max-width:500px;margin:0 auto"><button onclick="showStore()" style="width:100%;padding:12px;background:#222;color:#fff;border:none;border-radius:8px">View Store</button></div>
+</div>
+</div>
+
+<script>
+let pkgs=[["50 Billion",200],["150 Billion",500],["300 Billion",1000],["500 Billion",2000],["1 Trillion",3000]];
+let curN='',curP=0;
+let g=document.getElementById('grid');
+pkgs.forEach(p=>{
+let d=document.createElement('div');d.className='pkg';
+d.innerHTML='<b>'+p[0]+'</b><h3>₦'+p[1].toLocaleString()+'</h3><small>TAP TO BUY</small>';
+d.onclick=function(){curN=p[0];curP=p[1];document.getElementById('selName').innerText=p[0];document.getElementById('selPrice').innerText='₦'+p[1].toLocaleString();document.getElementById('payBox').style.display='block';document.getElementById('payBox').scrollIntoView({behavior:'smooth'});};
+g.appendChild(d);
+});
+function goWhats(){
+let u=document.getElementById('gameUser').value||'Not entered';
+let orders=JSON.parse(localStorage.getItem('ademide_orders')||'[]');
+orders.push({pkg:curN,price:curP,username:u,time:new Date().toLocaleString()});
+localStorage.setItem('ademide_orders',JSON.stringify(orders));
+window.open('https://wa.me/2349077036454?text='+encodeURIComponent('Hello ADEMIDE OGO! I want '+curN+' ₦'+curP+' Username: '+u+' Paid to 9077036454')),'_blank');
+}
+function showAdmin(){document.getElementById('storePage').style.display='none';document.getElementById('adminPage').style.display='block';window.scrollTo(0,0);}
+function showStore(){document.getElementById('adminPage').style.display='none';document.getElementById('storePage').style.display='block';document.getElementById('loginBox').style.display='block';document.getElementById('dashBox').style.display='none';}
+function doLogin(){
+if(document.getElementById('pass').value==='ademide2026'){
+document.getElementById('loginBox').style.display='none';document.getElementById('dashBox').style.display='block';
+let orders=JSON.parse(localStorage.getItem('ademide_orders')||'[]');
+document.getElementById('totalOrders').innerText=orders.length;
+document.getElementById('orderList').innerHTML=orders.length?orders.map(o=>'<div style="background:#222;padding:10px;border-radius:8px;margin:6px 0;font-size:13px"><b>'+o.pkg+' ₦'+o.price.toLocaleString()+'</b><br>'+o.username+' - '+o.time+'</div>').join(''):'<p style="color:#888">No orders yet</p>';
+}else{alert('Wrong password');}
+}
+</script>
+</body>
+  </html>
